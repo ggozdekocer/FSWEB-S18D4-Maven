@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -65,7 +66,7 @@ class MainTest {
         burger.setContents("Lettuce, Tomato, Vegan Patty, Avocado");
 
 
-        assertEquals(1L, burger.getId());
+        assertEquals(Math.toIntExact(1L), burger.getId());
         assertEquals("Vegan Delight", burger.getName());
         assertEquals(8.99, burger.getPrice());
         assertEquals(true, burger.getIsVegan());
@@ -120,7 +121,7 @@ class MainTest {
         burger.setId(1L);
         when(entityManager.merge(burger)).thenReturn(burger);
         Burger updated = burgerDao.update(burger);
-        assertEquals(1L, updated.getId());
+        assertEquals(Math.toIntExact(1L), updated.getId());
     }
 
     @Test
@@ -138,7 +139,7 @@ class MainTest {
         TypedQuery<Burger> query = mock(TypedQuery.class);
         when(entityManager.createQuery(anyString(), eq(Burger.class))).thenReturn(query);
         when(query.getResultList()).thenReturn(Arrays.asList(new Burger(), new Burger()));
-        List<Burger> burgers = burgerDao.findByPrice(10);
+        List<Burger> burgers = burgerDao.findByPrice(10.0);
         assertEquals(2, burgers.size());
     }
 

@@ -190,10 +190,13 @@ class ApplicationPropertiesAndControllerTest {
     @Test
     @DisplayName("Find by price test")
     void testFindByPrice() throws Exception {
-        List<Burger> burgers = Arrays.asList(sampleBurger);
-        given(burgerDao.findByPrice(sampleBurger.getPrice().intValue())).willReturn(burgers);
 
-        mockMvc.perform(get("/burger/price/{price}", sampleBurger.getPrice().intValue()))
+        List<Burger> burgers = Arrays.asList(sampleBurger);
+
+        given(burgerDao.findByPrice(sampleBurger.getPrice()))
+                .willReturn(burgers);
+
+        mockMvc.perform(get("/burger/price/{price}", sampleBurger.getPrice()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].name", is(sampleBurger.getName())));
